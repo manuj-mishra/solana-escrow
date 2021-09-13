@@ -1,21 +1,20 @@
 import React, {useState} from "react";
 import {Button, ButtonGroup, Card, Container, Form, ToggleButton} from "react-bootstrap";
+import Offer from "./Offer";
 
 function Trade() {
     const [actionValue, setActionValue] = useState('1');
     const actions = [
-        { name: 'Offer a trade', value: '0' },
-        { name: 'Accept a trade', value: '1' },
+        { name: 'Make a new trade', value: '0' },
+        { name: 'Take an existing trade', value: '1' },
     ];
-
 
     return (
         <Container>
             <h1 className="mt-3 mb-3">Escrow</h1>
             <Card body>
-                <Card.Title>Trading</Card.Title>
-                <p className="mt-3">I would like to: </p>
-                <ButtonGroup className="mb-2">
+                <h4 className="mb-3">Type of trade</h4>
+                <ButtonGroup>
                     {actions.map((action, idx) => (
                         <ToggleButton
                             key={idx}
@@ -31,6 +30,14 @@ function Trade() {
                         </ToggleButton>
                     ))}
                 </ButtonGroup>
+                <br/>
+                <br/>
+                <Offer/>
+                <center>
+                    <Button variant="danger" type="submit" >
+                        Initialise escrow trade
+                    </Button>
+                </center>
             </Card>
         </Container>
     )

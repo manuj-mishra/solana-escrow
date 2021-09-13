@@ -4,8 +4,8 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import SetID from "./pages/Configure";
-import Trade from "./pages/Trade";
+import SetID from "./components/Configure";
+import Trade from "./components/Trade";
 
 function App() {
   return (
