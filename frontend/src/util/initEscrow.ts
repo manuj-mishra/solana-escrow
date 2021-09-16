@@ -1,5 +1,6 @@
 import { AccountLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Account, Connection, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction, TransactionInstruction } from "@solana/web3.js";
+// @ts-ignore
 import BN from "bn.js";
 import { ESCROW_ACCOUNT_DATA_LAYOUT, EscrowLayout } from "./layout";
 
@@ -65,11 +66,11 @@ export const initEscrow = async (
     const encodedEscrowState = (await connection.getAccountInfo(escrowAccount.publicKey, 'singleGossip'))!.data;
     const decodedEscrowState = ESCROW_ACCOUNT_DATA_LAYOUT.decode(encodedEscrowState) as EscrowLayout;
     return {
-        escrowAccountPubkey: escrowAccount.publicKey.toBase58(),
+        escrowAccount: escrowAccount.publicKey.toBase58(),
         isInitialized: !!decodedEscrowState.isInitialized,
-        initializerAccountPubkey: new PublicKey(decodedEscrowState.initializerPubkey).toBase58(),
-        XTokenTempAccountPubkey: new PublicKey(decodedEscrowState.initializerTempTokenAccountPubkey).toBase58(),
-        initializerYTokenAccount: new PublicKey(decodedEscrowState.initializerReceivingTokenAccountPubkey).toBase58(),
+        initializerMainAccount: new PublicKey(decodedEscrowState.initializerPubkey).toBase58(),
+        initializerXTokenTempAccount: new PublicKey(decodedEscrowState.initializerTempTokenAccountPubkey).toBase58(),
+        initializerYTokenMainAccount: new PublicKey(decodedEscrowState.initializerReceivingTokenAccountPubkey).toBase58(),
         expectedAmount: new BN(decodedEscrowState.expectedAmount, 10, "le").toNumber()
     };
 }

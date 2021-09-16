@@ -1,5 +1,6 @@
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Account, Connection, PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js";
+// @ts-ignore
 import BN from "bn.js";
 import { ESCROW_ACCOUNT_DATA_LAYOUT, EscrowLayout } from "./layout"; 
 
@@ -27,11 +28,11 @@ export const takeTrade = async (
     }
     const decodedEscrowLayout = ESCROW_ACCOUNT_DATA_LAYOUT.decode(encodedEscrowState) as EscrowLayout;
     const escrowState =  {
-        escrowAccountPubkey: escrowAccountPubkey,
+        escrowAccount: escrowAccountPubkey,
         isInitialized: !!decodedEscrowLayout.isInitialized,
-        initializerAccountPubkey: new PublicKey(decodedEscrowLayout.initializerPubkey),
-        XTokenTempAccountPubkey: new PublicKey(decodedEscrowLayout.initializerTempTokenAccountPubkey),
-        initializerYTokenAccount: new PublicKey(decodedEscrowLayout.initializerReceivingTokenAccountPubkey),
+        initializerMainAccount: new PublicKey(decodedEscrowLayout.initializerPubkey),
+        initializerXTokenTempAccount: new PublicKey(decodedEscrowLayout.initializerTempTokenAccountPubkey),
+        initializerYTokenMainAccount: new PublicKey(decodedEscrowLayout.initializerReceivingTokenAccountPubkey),
         expectedAmount: new BN(decodedEscrowLayout.expectedAmount, 10, "le")
     };
 
@@ -44,9 +45,9 @@ export const takeTrade = async (
             { pubkey: takerAccount.publicKey, isSigner: true, isWritable: false },
             { pubkey: takerYTokenAccountPubkey, isSigner: false, isWritable: true },
             { pubkey: takerXTokenAccountPubkey, isSigner: false, isWritable: true },
-            { pubkey: escrowState.XTokenTempAccountPubkey, isSigner: false, isWritable: true},
-            { pubkey: escrowState.initializerAccountPubkey, isSigner: false, isWritable: true},
-            { pubkey: escrowState.initializerYTokenAccount, isSigner: false, isWritable: true},
+            { pubkey: escrowState.initializerXTokenTempAccount, isSigner: false, isWritable: true},
+            { pubkey: escrowState.initializerMainAccount, isSigner: false, isWritable: true},
+            { pubkey: escrowState.initializerYTokenMainAccount, isSigner: false, isWritable: true},
             { pubkey: escrowAccountPubkey, isSigner: false, isWritable: true },
             { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false},
             { pubkey: PDA[0], isSigner: false, isWritable: false}

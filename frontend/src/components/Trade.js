@@ -33,11 +33,6 @@ function Trade() {
                 <br/>
                 <br/>
                 <Offer/>
-                <center>
-                    <Button variant="danger" type="submit" >
-                        Initialise escrow trade
-                    </Button>
-                </center>
             </Card>
         </Container>
     )
